@@ -10,11 +10,14 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "axios": "^1.7.7",
     "leaflet": "^1.9.4",
-    "vue": "^3.4.37"
+    "vue": "^3.4.37",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.11.1",
+    "@types/node": "^22.7.2",
     "@typescript-eslint/eslint-plugin": "^8.7.0",
     "@typescript-eslint/parser": "^8.7.0",
     "@vitejs/plugin-vue": "^5.1.2",

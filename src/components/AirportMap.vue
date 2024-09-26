@@ -1,33 +1,32 @@
 <template>
-    <div class="container">
-        <h1>Airport Map</h1>
-        <div id="map" ref="mapContainer"></div>
-    </div>
+  <div class="container">
+    <h1>Airport Map</h1>
+    <div id="map" ref="mapContainer"></div>
+  </div>
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
-import L from 'leaflet';
-import 'leaflet/dist/leaflet.css';
+  import { onMounted, ref } from 'vue';
+  import L from 'leaflet';
+  import 'leaflet/dist/leaflet.css';
 
-const mapContainer = ref(null);
+  const mapContainer = ref(null);
 
-const initMap = () => {
+  const initMap = () => {
     const map = L.map(mapContainer.value).setView([48.8566, 2.3522], 4);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
     }).addTo(map);
+  };
 
-};
-
-onMounted(() => {
+  onMounted(() => {
     initMap();
-});
+ });
 </script>
 
 <style>
-body {
+  body {
     margin: 0;
     padding: 0;
     display: flex;
@@ -35,21 +34,20 @@ body {
     align-items: center;
     height: 100vh;
     background-color: #555;
-}
+  }
 
-.container {
+  .container {
     text-align: center;
-    width: 100%;
-    max-width: 100%;
+    min-width: 800px;
     padding: 20px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     background-color: #000;
     border-radius: 8px;
     color: #fff;
-}
+   }
 
-#map {
-    width: 100%;
-    height: 500px;
-}
+  #map {
+    min-width: 100%;
+    height: 600px;
+  }
 </style>

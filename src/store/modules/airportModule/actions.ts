@@ -5,7 +5,7 @@ import axios from "axios";
 const apiKey = '2BejQXyKdb4YRhft3QrXCg==fMdl33Om85YYq4II';
 
 export default {
-  async fetchAirportData({ commit }: ActionContext<AirportState, Airport>, icaoCodes: string[]) {
+  async fetchAirportData({ commit }: ActionContext<AirportState, unknown>, icaoCodes: string[]) {
     try {
       commit("setAirportRequest"); 
       const airportPromises = icaoCodes.map(icao => {
@@ -20,8 +20,9 @@ export default {
         .map((airport: Airport) => ({
           icao: airport.icao,
           name: airport.name,
-          lat: airport.lat,
-          lon: airport.lon
+          latitude: airport.latitude,
+          longitude: airport.longitude
+
         }));
       commit("setAirportSuccess", airportData); 
     } catch (error) {

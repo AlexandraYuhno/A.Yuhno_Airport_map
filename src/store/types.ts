@@ -2,8 +2,8 @@
 export interface Airport {
     name: string;
     icao: string;
-    lat: number;
-    lon: number;
+    latitude: number;
+    longitude: number;
   }
 
   export interface AirportState {

@@ -6,7 +6,7 @@
     <div v-if="error">{{ error }}</div>
     <div v-else>
       <div id="map" ref="mapContainer"></div>
-      <ul>
+      <ul >
         <li 
           v-for="airport in airports" 
           :key="airport.icao">
@@ -27,6 +27,8 @@ const store = useStore();
 const airports = computed(() => store.state.airports);
 const loading = computed(() => store.state.isLoading);
 const error = computed(() => store.state.error);
+
+console.log('Airports data:', airports.value);
 
 const mapContainer = ref(null);
 let map;

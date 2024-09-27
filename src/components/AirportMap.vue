@@ -1,8 +1,8 @@
 <template>
   <div class="container">
     <h1>Airport Map</h1>
-    <div v-if="loading">Loading...</div>
-    <div v-if="error">{{ error }}</div>
+    <div v-if="loading()">Loading...</div>
+    <div v-if="error()">{{ error }}</div>
     <div v-else>
       <div id="map" ref="mapContainer"></div>
     </div>
@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, computed, onMounted, watch } from 'vue';
+  import { ref, onMounted, watch } from 'vue';
 
   import { useAirportStore } from '../store/airportModule'; 
   import MapService from '../mapServises'; 
@@ -18,9 +18,9 @@
 
   const airportStore = useAirportStore();
 
-  const airports = computed(() => airportStore.airports);
-  const loading = computed(() => airportStore.isLoading);
-  const error = computed(() => airportStore.error);
+  const airports = () => airportStore.airports;
+  const loading = () => airportStore.isLoading;
+  const error = () => airportStore.error;
 
   const mapContainer = ref<HTMLElement | null>(null);
   let mapService: MapService | null = null;

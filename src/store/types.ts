@@ -1,4 +1,3 @@
-
 export interface Airport {
     name: string;
     icao: string;

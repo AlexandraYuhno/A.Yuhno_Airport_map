@@ -5,55 +5,51 @@
     <div v-if="error">{{ error }}</div>
     <div v-else>
       <div id="map" ref="mapContainer"></div>
-      <div v-for="airport in airports" 
-        :key="airport.icao">
-      </div>
     </div>
   </div>
 </template>
- 
-<script setup>
+
+<script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue';
 import { useStore } from 'vuex';
-import L from 'leaflet';
-import 'leaflet/dist/leaflet.css';
- 
+
+import MapService from '../mapServises'; 
+import { Airport } from '@/store/types';
+
 const store = useStore();
 const airports = computed(() => store.state.airports.airports);
 const loading = computed(() => store.state.airports.isLoading);
 const error = computed(() => store.state.airports.error);
- 
-const mapContainer = ref(null);
-let map 
- 
+
+const mapContainer = ref<HTMLElement | null>(null);
+let mapService: MapService | null = null;
+
 const initMap = () => {
-  map = L.map(mapContainer.value).setView([48.8566, 2.3522], 4); 
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
-  }).addTo(map);
+  if (mapContainer.value) {  
+    mapService = new MapService(mapContainer.value);
+    mapService.initMap();
+  }
 };
- 
-const addMarkersToMap = (airportData) => {
-  airportData.forEach(airport => {
-    const { latitude, longitude, name, icao } = airport;
-    const marker = L.marker([latitude, longitude]).addTo(map);
-    marker.bindTooltip(`${name} (ICAO: ${icao})`, { permanent: false });
-  });
+
+const addMarkersToMap = (airportData: Airport[]) => {
+  if (mapService && mapService.isMapInitialized()) {
+    mapService.addMarkers(airportData);
+  }
 };
- 
+
 watch(airports, (newAirports) => {
-  if (map && newAirports.length > 0) {
-    addMarkersToMap(newAirports); 
+  if (newAirports.length > 0) {
+    addMarkersToMap(newAirports);
   }
 });
- 
+
 onMounted(() => {
-  const icaoCodes = ['EGLL', 'LFPG', 'LTBA', 'EDDF', 'EHAM']; 
+  const icaoCodes = ['EGLL', 'LFPG', 'LTBA', 'EDDF', 'EHAM'];
   store.dispatch('fetchAirportData', icaoCodes); 
   initMap(); 
 });
 </script>
- 
+
 <style>
 body {
   margin: 0;
@@ -64,7 +60,7 @@ body {
   height: 100vh;
   background-color: #555;
 }
- 
+
 .container {
   text-align: center;
   min-width: 800px;
@@ -74,7 +70,7 @@ body {
   border-radius: 8px;
   color: #fff;
 }
- 
+
 #map {
   min-width: 100%;
   height: 600px;

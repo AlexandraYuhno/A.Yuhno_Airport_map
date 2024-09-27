@@ -4,7 +4,9 @@
     <div v-if="loading()">Loading...</div>
     <div v-if="error()">{{ error }}</div>
     <div v-else>
-      <div id="map" ref="mapContainer"></div>
+      <div id="map" ref="mapContainer">
+        
+      </div>
     </div>
   </div>
 </template>

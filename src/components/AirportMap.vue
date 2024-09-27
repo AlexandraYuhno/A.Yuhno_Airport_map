@@ -4,8 +4,31 @@
     <div v-if="loading()">Loading...</div>
     <div v-if="error()">{{ error }}</div>
     <div v-else>
-      <div id="map" ref="mapContainer">
-        
+      <div id="map-container">
+        <div id="map" ref="mapContainer"></div>
+        <div class="button-switch">
+          <button 
+            class="button" 
+            :class="{ active: activeButton === 'info' }" 
+            @click="setActiveButton('info')"
+          >
+            Инфо
+          </button>
+          <button 
+            class="button" 
+            :class="{ active: activeButton === 'weather' }" 
+            @click="setActiveButton('weather')"
+          >
+            Погода
+          </button>
+          <button 
+            class="button" 
+            :class="{ active: activeButton === 'air' }" 
+            @click="setActiveButton('air')"
+          >
+            Воздух
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -26,6 +49,17 @@
 
   const mapContainer = ref<HTMLElement | null>(null);
   let mapService: MapService | null = null;
+
+  const activeButton = ref<string>('info');
+
+  const setActiveButton = (button: string) => {
+    activeButton.value = button;
+    if (button === 'info') {
+      mapService?.addMarkers(airports()); 
+    } else {
+      // логика
+    }
+  };
 
   const addMarkersToMap = (airportData: Airport[]) => {
     if (mapService && mapService.isMapInitialized) {
@@ -68,10 +102,45 @@
     background-color: #000;
     border-radius: 8px;
     color: #fff;
+    position: relative;
+  }
+
+  #map-container {
+    position: relative;
+    width: 100%;
+    height: 600px;
   }
 
   #map {
-    min-width: 100%;
-    height: 600px;
+    width: 100%;
+    height: 100%;
+  }
+
+  .button-switch {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 1000; 
+  }
+
+  .button {
+    width: 120px; 
+    height: 40px; 
+    background-color: #444;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .button.active {
+    background-color: #007BFF; 
+  }
+
+  .button:hover {
+    background-color: #555;
   }
 </style>

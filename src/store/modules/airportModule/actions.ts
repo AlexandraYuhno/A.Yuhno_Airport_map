@@ -22,7 +22,6 @@ export default {
           name: airport.name,
           latitude: airport.latitude,
           longitude: airport.longitude
-
         }));
       commit("setAirportSuccess", airportData); 
     } catch (error) {

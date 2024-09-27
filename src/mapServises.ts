@@ -10,17 +10,15 @@ const tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.pn
 
 export default class MapService {
   private mapContainer: HTMLElement;
-  private map!: L.Map;
+  private map: L.Map;
 
-  constructor(mapContainer: HTMLElement) {
-    this.mapContainer = mapContainer;
-  }
-
-  initMap(
+  constructor(
+    mapContainer: HTMLElement, 
     center: [number, number] = [48.8566, 2.3522], 
     zoom: number = 4) {
-    this.map = L.map(this.mapContainer).setView(center, zoom);
-    tileLayer.addTo(this.map); 
+      this.mapContainer = mapContainer;
+      this.map = L.map(this.mapContainer).setView(center, zoom);
+    tileLayer.addTo(this.map);
   }
 
   addMarkers(airports: Airport[]) {
@@ -32,7 +30,7 @@ export default class MapService {
     });
   }
 
-  isMapInitialized(): boolean {
+  get isMapInitialized(): boolean {
     return this.map !== null;
   }
 }

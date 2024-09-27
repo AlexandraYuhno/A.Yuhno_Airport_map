@@ -25,15 +25,8 @@
   const mapContainer = ref<HTMLElement | null>(null);
   let mapService: MapService | null = null;
 
-  const initMap = () => {
-    if (mapContainer.value) {  
-      mapService = new MapService(mapContainer.value);
-      mapService.initMap();
-    }
-  };
-
   const addMarkersToMap = (airportData: Airport[]) => {
-    if (mapService && mapService.isMapInitialized()) {
+    if (mapService && mapService.isMapInitialized) {
       mapService.addMarkers(airportData);
     }
   };
@@ -47,7 +40,10 @@
   onMounted(() => {
     const icaoCodes = ['EGLL', 'LFPG', 'LTBA', 'EDDF', 'EHAM'];
     airportStore.fetchAirportData(icaoCodes);
-    initMap(); 
+
+    if (mapContainer.value) {  
+      mapService = new MapService(mapContainer.value);
+    }
   });
 </script>
 

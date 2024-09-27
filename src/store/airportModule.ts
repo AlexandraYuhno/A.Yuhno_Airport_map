@@ -19,29 +19,29 @@ export const useAirportStore = defineStore('airportStore', {
 
       try {
         const airportPromises = icaoCodes.map(icao =>
-          axios.get(`https://api.api-ninjas.com/v1/airports?icao=${icao}`, {
-            headers: { 'X-Api-Key': apiKey },
-          })
+          axios
+            .get(`https://api.api-ninjas.com/v1/airports?icao=${icao}`, {
+              headers: { 'X-Api-Key': apiKey },
+            })
+            .then(response => response.data[0])
         );
-
-        const responses = await Promise.all(airportPromises);
-
-        const airportData: Airport[] = responses
-          .map(response => response.data[0]) 
-          .filter(Boolean) 
-          .map((airport: Airport) => ({
-            icao: airport.icao,
-            name: airport.name,
-            latitude: airport.latitude,
-            longitude: airport.longitude,
-          }));
-
+        const airportData: Airport[] = await Promise.all(airportPromises)
+          .then((data) =>
+            data
+              .filter(Boolean)
+              .map((airport: Airport) => ({
+                icao: airport.icao,
+                name: airport.name,
+                latitude: airport.latitude,
+                longitude: airport.longitude,
+              }))
+          );
         this.airports = airportData;
-      } catch (error:  unknown ) {
+      } catch (error: unknown) {
         this.error = (error as Error).message || 'Failed to fetch airport data';
       } finally {
         this.isLoading = false;
       }
-    },
+    }
   },
 });

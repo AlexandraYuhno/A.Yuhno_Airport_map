@@ -11,15 +11,15 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue';
-import { useStore } from 'vuex';
-
+import { useAirportStore } from '../store/airportModule'; 
 import MapService from '../mapServises'; 
-import { Airport } from '@/store/types';
+import { Airport } from '../store/types';
 
-const store = useStore();
-const airports = computed(() => store.state.airports.airports);
-const loading = computed(() => store.state.airports.isLoading);
-const error = computed(() => store.state.airports.error);
+const airportStore = useAirportStore();
+
+const airports = computed(() => airportStore.airports);
+const loading = computed(() => airportStore.isLoading);
+const error = computed(() => airportStore.error);
 
 const mapContainer = ref<HTMLElement | null>(null);
 let mapService: MapService | null = null;
@@ -45,7 +45,7 @@ watch(airports, (newAirports) => {
 
 onMounted(() => {
   const icaoCodes = ['EGLL', 'LFPG', 'LTBA', 'EDDF', 'EHAM'];
-  store.dispatch('fetchAirportData', icaoCodes); 
+  airportStore.fetchAirportData(icaoCodes);
   initMap(); 
 });
 </script>

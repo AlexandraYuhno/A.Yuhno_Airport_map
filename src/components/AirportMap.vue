@@ -9,22 +9,19 @@
         <div class="button-switch">
           <button 
             class="button" 
-            :class="{ active: activeButton === 'info' }" 
-            @click="setActiveButton('info')"
+            @click="setSwitchButton('info')"
           >
             Инфо
           </button>
           <button 
             class="button" 
-            :class="{ active: activeButton === 'weather' }" 
-            @click="setActiveButton('weather')"
+            @click="setSwitchButton('weather')"
           >
             Погода
           </button>
           <button 
             class="button" 
-            :class="{ active: activeButton === 'air' }" 
-            @click="setActiveButton('air')"
+            @click="setSwitchButton('air')"
           >
             Воздух
           </button>
@@ -50,14 +47,11 @@
   const mapContainer = ref<HTMLElement | null>(null);
   let mapService: MapService | null = null;
 
-  const activeButton = ref<string>('info');
-
-  const setActiveButton = (button: string) => {
-    activeButton.value = button;
+  const setSwitchButton = (button: string) => {
     if (button === 'info') {
       mapService?.addMarkers(airports()); 
     } else {
-      ///
+      console.log(`${button}`);
     }
   };
 
@@ -136,11 +130,13 @@
     cursor: pointer;
   }
 
+  .button:focus,
   .button.active {
-    background-color: #007BFF; 
+    background-color: #007BFF;
+    outline: none;
   }
 
   .button:hover {
-    background-color: #555;
+    background-color: #000;
   }
 </style>

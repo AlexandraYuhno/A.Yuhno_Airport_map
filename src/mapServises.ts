@@ -27,6 +27,9 @@ export default class MapService {
       const { latitude, longitude, name, icao } = airport;
       const marker = L.marker([latitude, longitude]).addTo(this.map);
       marker.bindTooltip(`${name} (ICAO: ${icao})`, { permanent: false });
+
+      const coordinates = airports.map(airport => [airport.latitude, airport.longitude]);
+      L.polyline(coordinates, { color: 'blue' }).addTo(this.map);
     });
   }
 

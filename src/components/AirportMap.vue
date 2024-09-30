@@ -57,7 +57,7 @@
     if (button === 'info') {
       mapService?.addMarkers(airports()); 
     } else {
-      // логика
+      ///
     }
   };
 

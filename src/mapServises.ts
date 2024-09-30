@@ -29,7 +29,7 @@ export default class MapService {
       marker.bindTooltip(`${name} (ICAO: ${icao})`, { permanent: false });
 
       const coordinates = airports.map(airport => [airport.latitude, airport.longitude]);
-      const line = L.polyline(coordinates, { color: 'blue' }).addTo(this.map);
+      L.polyline(coordinates, { color: 'blue' }).addTo(this.map);
     });
   }
 

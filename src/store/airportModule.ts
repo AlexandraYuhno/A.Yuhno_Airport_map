@@ -4,7 +4,7 @@ import axios, { AxiosInstance } from 'axios';
 import { useAirQualityStore } from './airQualityModule';
 import { Airport, AirportState } from '@/store/types';
 
-const apiKey = '2BejQXyKdb4YRhft3QrXCg==fMdl33Om85YYq4II';
+const apiKey = import.meta.env.VUE_APP_API_KEY;
 
 const apiClient: AxiosInstance = axios.create({
   baseURL: 'https://api.api-ninjas.com/v1',

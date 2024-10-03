@@ -3,7 +3,7 @@ import axios, { AxiosInstance } from 'axios';
 
 import { AirportAirQuality, AirQualityState } from './types';
 
-const apiKey = '2BejQXyKdb4YRhft3QrXCg==fMdl33Om85YYq4II';
+const apiKey = import.meta.env.VUE_APP_API_KEY;
 
 const apiClient: AxiosInstance = axios.create({
   baseURL: 'https://api.api-ninjas.com/v1',
@@ -36,7 +36,7 @@ export const useAirQualityStore = defineStore('airQualityStore', {
       this.error = null;
       try {
         const response = await apiClient.get(getAirQualityUrl(latitude, longitude));
-          this.airQuality[icao] = response.data;
+        this.airQuality[icao] = response.data;
       } catch (error) {
         this.error = `Failed to fetch air quality data for ${icao}`;
         console.error(this.error, error);

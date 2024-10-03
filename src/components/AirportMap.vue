@@ -67,13 +67,12 @@
   };
 
   watch(airports, (newAirports) => {
-    if (newAirports.length > 0) {
-      if (isInfoActive.value) {
+    if (!newAirports.length) return;
+    if (isInfoActive.value) {
         mapService?.addMarkers(newAirports);
       } else if (isAirActive.value) {
         mapService?.addAirQualityMarkers(newAirports, airQuality());
       }
-    }
   });
 
   onMounted(() => {

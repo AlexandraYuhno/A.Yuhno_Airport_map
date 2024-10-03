@@ -42,12 +42,12 @@ export default class MapService {
       const airQuality = AirportAirQuality[icao];
       const airQualityInfo = airQuality 
         ? `Показатели воздуха: 
-          SO2: ${airQuality.SO2.concentration}, 
-          NO2: ${airQuality.NO2.concentration}, 
-          CO: ${airQuality.CO.concentration}, 
-          O3: ${airQuality.O3.concentration}` 
+        SO2: ${airQuality.SO2.concentration}, 
+        NO2: ${airQuality.NO2.concentration}, 
+        CO: ${airQuality.CO.concentration}, 
+        O3: ${airQuality.O3.concentration}` 
         : 'Air Quality Data Not Available';
-      marker.bindTooltip(`${airQualityInfo}`, { permanent: false });
+      marker.bindTooltip(airQualityInfo, { permanent: false });
     })
   }
 

@@ -9,6 +9,7 @@ export interface AirportState {
   isLoading: boolean;
   error: string | null;
 }
+
 export interface AirportAirQuality {
   CO: { aqi: number; concentration: number };
   NO2: { aqi: number; concentration: number };

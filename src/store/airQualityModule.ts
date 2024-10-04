@@ -1,24 +1,8 @@
 import { defineStore } from 'pinia';
-import axios, { AxiosInstance } from 'axios';
+
+import apiClient from '../api/apiClient';
 
 import { AirportAirQuality, AirQualityState } from './types';
-
-const apiKey = import.meta.env.VUE_APP_API_KEY;
-
-const apiClient: AxiosInstance = axios.create({
-  baseURL: 'https://api.api-ninjas.com/v1',
-    headers: {
-      'X-Api-Key': apiKey,
-    },
-});
-
-apiClient.interceptors.response.use(
-  response => response,
-  error => {
-    console.error('API Error:', error);
-    return Promise.reject(error);
-  }
-);
 
 const getAirQualityUrl = (latitude: number, longitude: number) =>
   `/airquality?lat=${latitude}&lon=${longitude}`;
@@ -28,7 +12,7 @@ export const useAirQualityStore = defineStore('airQualityStore', {
     airQuality: {} as Record<string, AirportAirQuality>,
     error: null,
     isLoading: false
-    }),
+  }),
 
   actions: {
     async fetchAirQualityData(latitude: number, longitude: number, icao: string) {

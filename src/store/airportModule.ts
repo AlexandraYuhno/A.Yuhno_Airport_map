@@ -1,25 +1,9 @@
 import { defineStore } from 'pinia';
-import axios, { AxiosInstance } from 'axios';
+
+import { fetchAirportData } from '../api/apiClient';
 
 import { useAirQualityStore } from './airQualityModule';
 import { Airport, AirportState } from '@/store/types';
-
-const apiKey = import.meta.env.VUE_APP_API_KEY;
-
-const apiClient: AxiosInstance = axios.create({
-  baseURL: 'https://api.api-ninjas.com/v1',
-  headers: {
-    'X-Api-Key': apiKey,
-  },
-});
-
-apiClient.interceptors.response.use(
-  response => response,
-  error => {
-    console.error('API Error:', error);
-    return Promise.reject(error);
-  }
-);
 
 export const useAirportStore = defineStore('airportStore', {
   state: (): AirportState => ({
@@ -35,11 +19,7 @@ export const useAirportStore = defineStore('airportStore', {
       this.error = null;
 
       try {
-        const airportPromises = icaoCodes.map(icao =>
-          apiClient
-            .get(`/airports?icao=${icao}`)
-            .then(response => response.data[0])
-        );
+        const airportPromises = icaoCodes.map(icao => fetchAirportData(icao));
         const airportData: Airport[] = await Promise.all(airportPromises)
           .then((data) =>
             data

@@ -10,12 +10,13 @@ export interface AirportState {
   error: string | null;
 }
 
-export interface AirportAirQuality {
-  CO: { aqi: number; concentration: number };
-  NO2: { aqi: number; concentration: number };
-  O3: { aqi: number; concentration: number };
-  SO2: { aqi: number; concentration: number };
-}
+export interface Compound {
+  aqi: number;
+  concentration: number;
+};
+
+export type AirportAirQuality = Record<string, Compound>;
+
 export interface AirQualityState {
   airQuality: Record<string, AirportAirQuality>;
   error: string | null;

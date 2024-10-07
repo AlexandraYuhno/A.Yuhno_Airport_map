@@ -10,6 +10,7 @@
           <button 
             class="button" 
             @click="setSwitchButton('info')"
+            :class="{ active: isInfoActive }"
           >
             Инфо
           </button>
@@ -22,6 +23,7 @@
           <button 
             class="button" 
             @click="setSwitchButton('air')"
+            :class="{ active: isAirActive }"
           >
             Воздух
           </button>
@@ -34,37 +36,43 @@
 <script setup lang="ts">
   import { ref, onMounted, watch } from 'vue';
 
-  import { useAirportStore } from '../store/airportModule'; 
-  import MapService from '../mapServises'; 
-  import { Airport } from '../store/types';
+  import MapService from '../mapServices'; 
+  import { useAirportStore } from '../store/airportModule';
+  import { useAirQualityStore } from '../store/airQualityModule';
 
   const airportStore = useAirportStore();
+  const airQualityStore = useAirQualityStore();
 
   const airports = () => airportStore.airports;
   const loading = () => airportStore.isLoading;
   const error = () => airportStore.error;
+  const airQuality = () => airQualityStore.airQuality;
 
   const mapContainer = ref<HTMLElement | null>(null);
   let mapService: MapService | null = null;
 
+  const isInfoActive = ref(true);
+  const isAirActive = ref(false);
+
   const setSwitchButton = (button: string) => {
     if (button === 'info') {
-      mapService?.addMarkers(airports()); 
-    } else {
-      console.log(`${button}`);
-    }
-  };
-
-  const addMarkersToMap = (airportData: Airport[]) => {
-    if (mapService && mapService.isMapInitialized) {
-      mapService.addMarkers(airportData);
+      isInfoActive.value = true;
+      isAirActive.value = false;
+      mapService?.addMarkers(airports());
+    } else if (button === 'air') {
+      isInfoActive.value = false;
+      isAirActive.value = true;
+      mapService?.addAirQualityMarkers(airports(), airQuality());
     }
   };
 
   watch(airports, (newAirports) => {
-    if (newAirports.length > 0) {
-      addMarkersToMap(newAirports);
-    }
+    if (!newAirports.length) return;
+    if (isInfoActive.value) {
+        mapService?.addMarkers(newAirports);
+      } else if (isAirActive.value) {
+        mapService?.addAirQualityMarkers(newAirports, airQuality());
+      }
   });
 
   onMounted(() => {

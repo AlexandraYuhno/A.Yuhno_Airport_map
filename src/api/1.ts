@@ -3,7 +3,7 @@ import axios, { AxiosInstance } from 'axios';
 const apiKey = import.meta.env.VITE_API_KEY;
 
 const apiClient: AxiosInstance = axios.create({
-  baseURL: 'https://api.api-ninjas.com/v1',
+  baseURL: '/api-ninjas',
   headers: {
     'X-Api-Key': apiKey,
   },
@@ -13,6 +13,7 @@ apiClient.interceptors.response.use(
   response => response,
   error => {
     console.error('API Error:', error);
+    return Promise.reject(error);
   }
 );
 
@@ -23,9 +24,8 @@ export const fetchAirportData = (icao: string) => {
 };
 
 export const fetchWeather = (station_id: string) => {
-  const url = `https://api.aviationapi.com/v1/weather/metar?apt=${station_id}`;
   return axios
-    .get(url)
+    .get(`/aviation/v1/weather/metar?apt=${station_id}`)
     .then((response) => response.data)
     .catch((error) => {
       console.error("Error fetching weather data:", error);

@@ -2,8 +2,7 @@ import { defineStore } from "pinia";
 
 import { fetchWeather } from "../api/apiClient";
 
-import { Airport, WeatherState } from "./types";
-import { Weather } from "@/store/types";
+import { Airport, WeatherState, Weather} from "./types";
 
 export const useWeatherStore = defineStore("weatherStore", {
   state: (): WeatherState => ({
@@ -12,14 +11,14 @@ export const useWeatherStore = defineStore("weatherStore", {
     error: null,
   }),
   actions: {
-    async fetchWeather(station_id: string) {
+    async fetchWeather(latitude: number, longitude: number) {
       this.isLoading = true;
       this.error = null;
       try {
-        const response = await fetchWeather(station_id);
+        const response = await fetchWeather(latitude, longitude);
         this.weather = response;
       } catch (error) {
-        this.error = `Failed to fetch weather data for ${station_id}`;
+        this.error = `Failed to fetch weather data for ${latitude}, ${longitude}`;
         console.error(this.error, error);
       } finally {
         this.isLoading = false;
@@ -27,11 +26,13 @@ export const useWeatherStore = defineStore("weatherStore", {
     },
 
     async fetchWeatherForAirports(airports: Airport[]) {
-      this.isLoading = true; 
-      this.error = null; 
+      this.isLoading = true;
+      this.error = null;
       try {
-        const weatherPromises = airports.map(airport => this.fetchWeather(airport.icao)); // Используем this, так как обращаемся к текущему экземпляру
-        await Promise.all(weatherPromises); 
+        const weatherPromises = airports.map((airport) =>
+          this.fetchWeather(airport.latitude, airport.longitude)
+        );
+        await Promise.all(weatherPromises);
       } catch (error) {
         this.error = `Failed to fetch weather data for multiple airports.`;
         console.error(this.error, error);
@@ -39,5 +40,5 @@ export const useWeatherStore = defineStore("weatherStore", {
         this.isLoading = false;
       }
     },
-  }
+  },
 });

@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-import { fetchWeather } from "../api/apiClient";
+import { fetchWeather } from "../api/apiClientWeather";
 
 import { Airport, WeatherState, Weather} from "./types";
 

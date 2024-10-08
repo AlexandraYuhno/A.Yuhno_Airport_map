@@ -1,27 +1,27 @@
 <template>
-  <div class="container">
+  <div class='container'>
     <h1>Airport Map</h1>
     <div v-if="loading()">Loading...</div>
     <div v-if="error()">{{ error }}</div>
     <div v-else>
-      <div id="map-container">
-        <div id="map" ref="mapContainer"></div>
-        <div class="button-switch">
+      <div id='map-container'>
+        <div id='map' ref='mapContainer'></div>
+        <div class='button-switch'>
           <button 
-            class="button" 
+            class='button' 
             @click="setSwitchButton('info')"
             :class="{ active: isInfoActive }"
           >
             Инфо
           </button>
           <button 
-            class="button" 
+            class='button' 
             @click="setSwitchButton('weather')"
           >
             Погода
           </button>
           <button 
-            class="button" 
+            class='button' 
             @click="setSwitchButton('air')"
             :class="{ active: isAirActive }"
           >
@@ -33,7 +33,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang='ts'>
   import { ref, onMounted, watch } from 'vue';
 
   import MapService from '../mapServices'; 

@@ -9,17 +9,10 @@ const apiClient: AxiosInstance = axios.create({
   },
 });
 
-apiClient.interceptors.response.use(
-  response => response,
-  error => {
-    console.error('API Error:', error);
-  }
-);
-
 export const fetchAirportData = (icao: string) => {
   return apiClient
     .get(`/airports?icao=${icao}`)
-    .then(response => response.data[0]);
+    .then((response) => response.data[0]);
 };
 
 export default apiClient;

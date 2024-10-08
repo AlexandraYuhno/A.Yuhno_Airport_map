@@ -1,10 +1,10 @@
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia';
 
-import { fetchWeather } from "../api/apiClientWeather";
+import { fetchWeather } from '../api/apiClientWeather';
 
-import { Airport, WeatherState, Weather} from "./types";
+import { Airport, WeatherState, Weather} from './types';
 
-export const useWeatherStore = defineStore("weatherStore", {
+export const useWeatherStore = defineStore('weatherStore', {
   state: (): WeatherState => ({
     weather: {} as Weather,
     isLoading: false,

@@ -24,15 +24,15 @@ export interface AirQualityState {
 }
 
 export type Weather = Record<
-  | "station_id"
-  | "temp"
-  | "dewpoint"
-  | "wind"
-  | "wind_vel"
-  | "visibility"
-  | "alt_hg"
-  | "alt_mb"
-  | "auto_report",
+  | 'station_id'
+  | 'temp'
+  | 'dewpoint'
+  | 'wind'
+  | 'wind_vel'
+  | 'visibility'
+  | 'alt_hg'
+  | 'alt_mb'
+  | 'auto_report',
   string
 >;
 

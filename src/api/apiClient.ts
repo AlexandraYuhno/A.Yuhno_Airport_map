@@ -3,9 +3,9 @@ import axios, { AxiosInstance } from 'axios';
 const apiKey = import.meta.env.VITE_API_KEY;
 
 const apiClient: AxiosInstance = axios.create({
-  baseURL: "https://api.api-ninjas.com/v1",
+  baseURL: 'https://api.api-ninjas.com/v1',
   headers: {
-    "X-Api-Key": apiKey,
+    'X-Api-Key': apiKey,
   },
 });
 

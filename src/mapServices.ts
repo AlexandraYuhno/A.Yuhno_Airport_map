@@ -53,7 +53,6 @@ export default class MapService {
   }
   addWeatherMarkers(airports: Airport[], weatherAirport: Record<string, Weather>) {
     if (!this.map) return;
-
     airports.forEach((airport) => {
       const { latitude, longitude, icao } = airport;
       const marker = L.marker([latitude, longitude]).addTo(this.map);

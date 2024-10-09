@@ -4,24 +4,25 @@
     <div v-if="loading()">Loading...</div>
     <div v-if="error()">{{ error }}</div>
     <div v-else>
-      <div id='map-container'>
-        <div id='map' ref='mapContainer'></div>
-        <div class='button-switch'>
+      <div id="map-container">
+        <div id="map" ref="mapContainer"></div>
+        <div class="button-switch">
           <button 
-            class='button' 
+            class="button" 
             @click="setSwitchButton('info')"
             :class="{ active: isInfoActive }"
           >
             Инфо
           </button>
           <button 
-            class='button' 
+            class="button" 
             @click="setSwitchButton('weather')"
+            :class="{ active: isWeatherActive }"
           >
             Погода
           </button>
           <button 
-            class='button' 
+            class="button"
             @click="setSwitchButton('air')"
             :class="{ active: isAirActive }"
           >
@@ -33,36 +34,47 @@
   </div>
 </template>
 
-<script setup lang='ts'>
+<script setup lang="ts">
   import { ref, onMounted, watch } from 'vue';
 
   import MapService from '../mapServices'; 
   import { useAirportStore } from '../store/airportModule';
   import { useAirQualityStore } from '../store/airQualityModule';
+  import { useWeatherStore } from '../store/weatherModule';
 
   const airportStore = useAirportStore();
   const airQualityStore = useAirQualityStore();
+  const weatherStore = useWeatherStore();
 
   const airports = () => airportStore.airports;
   const loading = () => airportStore.isLoading;
   const error = () => airportStore.error;
   const airQuality = () => airQualityStore.airQuality;
+  const weather = () => weatherStore.weather;
 
   const mapContainer = ref<HTMLElement | null>(null);
   let mapService: MapService | null = null;
 
   const isInfoActive = ref(true);
   const isAirActive = ref(false);
+  const isWeatherActive = ref(false);
 
   const setSwitchButton = (button: string) => {
     if (button === 'info') {
       isInfoActive.value = true;
       isAirActive.value = false;
+      isWeatherActive.value = false;
       mapService?.addMarkers(airports());
     } else if (button === 'air') {
       isInfoActive.value = false;
       isAirActive.value = true;
+      isWeatherActive.value = false;
       mapService?.addAirQualityMarkers(airports(), airQuality());
+    } else if (button === 'weather') {
+      isInfoActive.value = false;
+      isAirActive.value = false;
+      isWeatherActive.value = true;
+      mapService?.addWeatherMarkers(airports(), weather());
     }
   };
 

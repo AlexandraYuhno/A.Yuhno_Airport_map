@@ -6,7 +6,7 @@ import { Airport, WeatherState, Weather} from './types';
 
 export const useWeatherStore = defineStore('weatherStore', {
   state: (): WeatherState => ({
-    weather: {} as Weather,
+    weather: {} as Record<string, Weather>,
     isLoading: false,
     error: null,
   }),
@@ -17,6 +17,7 @@ export const useWeatherStore = defineStore('weatherStore', {
       try {
         const response = await fetchWeather(latitude, longitude);
         this.weather = response;
+        console.log(this.weather);
       } catch (error) {
         this.error = `Failed to fetch weather data for ${latitude}, ${longitude}`;
         console.error(this.error, error);

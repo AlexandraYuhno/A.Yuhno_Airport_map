@@ -23,18 +23,14 @@ export interface AirQualityState {
   isLoading: boolean;
 }
 
-export type Weather = Record<
-  | 'station_id'
-  | 'temp'
-  | 'dewpoint'
-  | 'wind'
-  | 'wind_vel'
-  | 'visibility'
-  | 'alt_hg'
-  | 'alt_mb'
-  | 'auto_report',
-  string
->;
+export type Weather = {
+  cloudBase: number;
+  humidity: number;
+  pressureSurfaceLevel: number;
+  temperature: number;
+  visibility: number;
+  windSpeed: number;
+}
 
 export interface WeatherState {
   weather: Weather;

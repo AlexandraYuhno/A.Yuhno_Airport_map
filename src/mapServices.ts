@@ -1,7 +1,7 @@
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
-import { Airport, AirportAirQuality } from './store/types';
+import { Airport, AirportAirQuality, Weather } from './store/types';
 
 const tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
   {
@@ -47,10 +47,28 @@ export default class MapService {
         CO: ${airQuality.CO.concentration}, 
         O3: ${airQuality.O3.concentration}`
         : 'Air Quality Data Not Available';
-      marker.bindTooltip(airQualityInfo, { permanent: false });
+      marker.bindTooltip(airQualityInfo, { permanent: false })
+      ;
     })
   }
-
+  addWeatherMarkers(airports: Airport[], weatherAirport: Record<string, Weather>) {
+    if (!this.map) return;
+    airports.forEach((airport) => {
+      const { latitude, longitude, icao } = airport;
+      const marker = L.marker([latitude, longitude]).addTo(this.map);
+      const weather = weatherAirport[icao];
+      const weatherInfo = weather
+        ? `Погода: 
+        Температура: ${weather.temperature}°C, 
+        Влажность: ${weather.humidity}%, 
+        Ветер: ${weather.windSpeed} м/с, 
+        Видимость: ${weather.visibility} км
+        Атмосферное давление: ${weather.pressureSurfaceLevel} мм рт. ст.
+        Облачность: ${weather.cloudBase}%`
+        : 'Weather Data Not Available';
+      marker.bindTooltip(weatherInfo, { permanent: false });
+    });
+  }
   get isMapInitialized(): boolean {
     return this.map !== null;
   }

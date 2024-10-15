@@ -59,16 +59,18 @@ export default class MapService {
       const weather = weatherAirport[icao];
       const weatherInfo = weather
         ? `Погода: 
-        Температура: ${weather.temperature}°C, 
+        Температура: ${weather.temperature}°C,
         Влажность: ${weather.humidity}%, 
         Ветер: ${weather.windSpeed} м/с, 
         Видимость: ${weather.visibility} км
         Атмосферное давление: ${weather.pressureSurfaceLevel} мм рт. ст.
         Облачность: ${weather.cloudBase}%`
         : 'Weather Data Not Available';
+      
       marker.bindTooltip(weatherInfo, { permanent: false });
     });
   }
+  
   get isMapInitialized(): boolean {
     return this.map !== null;
   }

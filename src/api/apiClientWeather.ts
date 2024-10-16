@@ -17,7 +17,7 @@ export const fetchWeather = (latitude: number, longitude: number) => {
   });
 
   return apiClientWeather
-    .get(`https://api.tomorrow.io/v4/weather/forecast?location=${latitude},${longitude}&units=metric&apikey=${apiKeyWeather}`)
+    .get(`?${queryParams}`)
     .then((response) => response.data)
     .catch((error) => console.error("Error fetching weather data:", error));
 };

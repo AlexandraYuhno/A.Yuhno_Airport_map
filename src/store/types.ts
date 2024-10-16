@@ -31,6 +31,7 @@ export type Weather = {
   visibility: number;
   windSpeed: number;
 }
+
 type AirportWeather = Record<string, Weather>;
 export interface WeatherState {
   weather: AirportWeather;

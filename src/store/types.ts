@@ -32,8 +32,9 @@ export type Weather = {
   windSpeed: number;
 }
 
+type AirportWeather = Record<string, Weather>;
 export interface WeatherState {
-  weather: Weather;
+  weather: AirportWeather;
   error: string | null;
   isLoading: boolean;
 }

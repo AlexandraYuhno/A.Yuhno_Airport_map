@@ -1,12 +1,10 @@
 import { defineStore } from 'pinia';
-
 import { fetchWeather } from '../api/apiClientWeather';
-
-import { Airport, WeatherState, Weather} from './types';
+import { Airport, WeatherState, Weather } from './types';
 
 export const useWeatherStore = defineStore('weatherStore', {
   state: (): WeatherState => ({
-    weather: {} as Weather,
+    weather: {} as Record<string, Weather>,
     isLoading: false,
     error: null,
   }),
@@ -16,7 +14,21 @@ export const useWeatherStore = defineStore('weatherStore', {
       this.error = null;
       try {
         const response = await fetchWeather(latitude, longitude);
-        this.weather = response;
+        const weatherData = response.timelines.minutely[0]?.values;
+        
+        if (!weatherData) throw new Error("Invalid weather data");
+
+        const weather: Weather = {
+          cloudBase: weatherData.cloudBase,
+          humidity: weatherData.humidity,
+          pressureSurfaceLevel: weatherData.pressureSurfaceLevel,
+          temperature: weatherData.temperature,
+          visibility: weatherData.visibility,
+          windSpeed: weatherData.windSpeed,
+        };
+
+        this.weather[`${latitude},${longitude}`] = weather;
+        return weather;
       } catch (error) {
         this.error = `Failed to fetch weather data for ${latitude}, ${longitude}`;
         console.error(this.error, error);
@@ -29,9 +41,13 @@ export const useWeatherStore = defineStore('weatherStore', {
       this.isLoading = true;
       this.error = null;
       try {
-        const weatherPromises = airports.map((airport) =>
-          this.fetchWeather(airport.latitude, airport.longitude)
-        );
+        const weatherPromises = airports.map(async (airport) => {
+          const weatherData = await this.fetchWeather(airport.latitude, airport.longitude);
+          if (weatherData) {
+            this.weather[airport.icao] = weatherData;
+          }
+        });
+
         await Promise.all(weatherPromises);
       } catch (error) {
         this.error = `Failed to fetch weather data for multiple airports.`;
